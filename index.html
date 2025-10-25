@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ask Gemini 🤖</title>
+    <style>
+      body { font-family: sans-serif; text-align:center; padding:50px; background:#638db2;}
+      input { width:300px; padding:10px; border-radius:8px; border:1px solid #ccc; }
+      button { padding:10px 15px; margin-left:10px; background:#b540b5; color:black; border:none; border-radius:8px; cursor:pointer; }
+      button:hover { background:#dcdce2; }
+      #answer { margin-top:30px; font-size:18px; color:#111827; }
+    </style>
+  </head>
+  <body>
+    <h1>Ask Gemini 🤖</h1>
+    <input id="question" placeholder="Type your question..." onkeypress="handleEnter(event)" />
+    <button onclick="askGemini()">Ask</button>
+    <div id="answer"></div>
+
+    <script>
+      function handleEnter(event) {
+        if (event.key === 'Enter') {
+          askGemini();
+        }
+      }
+
+      async function askGemini() {
+        const question = document.getElementById("question").value.trim();
+        if(!question) return alert("Please type a question!");
+        document.getElementById("answer").innerText = "Thinking...";
+        try {
+          const res = await fetch("http://localhost:5004/ask", {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({question})
+          });
+          const data = await res.json();
+          document.getElementById("answer").innerText = data.answer || "Error: "+data.error;
+        } catch(error) {
+          document.getElementById("answer").innerText = "Error: " + error.message;
+        }
+      }
+    </script>
+  </body>
+</html>
