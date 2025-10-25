@@ -29,7 +29,7 @@
         if(!question) return alert("Please type a question!");
         document.getElementById("answer").innerText = "Thinking...";
         try {
-          const res = await fetch("http://localhost:5004/ask", {
+          const res = await fetch("https://chatbot-backend-six-lac.vercel.app/ask", {
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({question})
